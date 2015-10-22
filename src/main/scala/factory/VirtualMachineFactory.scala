@@ -14,7 +14,7 @@ object VirtualMachineFactory {
   // TODO
   def byteCodeFactory: ByteCodeFactory = ???
   // TODO
-  def vendorParser: ProgramParser = ???
+  def vendorParser: ProgramParser = new MyProgramParser()
   // TODO
   def byteCodeParser: ByteCodeParser = ???
   // TODO
