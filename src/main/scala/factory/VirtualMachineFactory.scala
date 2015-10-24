@@ -1,9 +1,13 @@
 package factory
 
-import adapter.ProgramParserAdapter
-import bc.{ByteCodeFactory, ByteCodeParser, ByteCodes, MyByteCodeParser}
-import vendor.{ProgramParser, VendorProgramParser}
-import vm.{VirtualMachineParser, MyVirtualMachine, VirtualMachine}
+//import adapter.ProgramParserAdapter
+//import bc.{ByteCodeFactory, ByteCodeParser, ByteCodes, MyByteCodeParser}
+//import vendor.{ProgramParser, VendorProgramParser}
+//import vm.{VirtualMachineParser, MyVirtualMachine, VirtualMachine}
+
+import bc.{ByteCodeFactory, ByteCodeParser}
+import vendor.{ProgramParser}
+import vm.{VirtualMachineParser, VirtualMachine}
 
 /**
  * The `VirtualMachineFactory` follows the *factory pattern*. It provides
