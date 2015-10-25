@@ -14,8 +14,13 @@ class MyByteCodeParser extends ByteCodeParser{
    * @param bc  a vector of bytes representing bytecodes
    * @return    a vector of `ByteCode` objects
    */
-  override def parse(bc: Vector[Byte]): Vector[ByteCode] = {
-    bytecode get in get
+  def parse(bc: Vector[Byte]): Vector[ByteCode] = {
+    var out: Vector[ByteCode]
+    var s = new MyByteCodeFactory()
+    for(i <- 0 until bc.length){
+      s.make(bc(i))
+    }
+    return out
   }
 
 }

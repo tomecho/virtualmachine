@@ -22,6 +22,8 @@ class MyByteCodeFactory extends ByteCodeFactory{
    * @return a new bytecode object
    */
   def make(byte: Byte, args: Int*): ByteCode = {
-    
+    var out =  Vector[ByteCode]()
+    var s = new MyByteCodeFactory()
+//
   }
 }
