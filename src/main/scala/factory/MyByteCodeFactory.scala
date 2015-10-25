@@ -21,5 +21,7 @@ class MyByteCodeFactory extends ByteCodeFactory{
    * @param args  an optional integer argument (depends on bytecode)
    * @return a new bytecode object
    */
-  def make(byte: Byte, args: Int*): ByteCode = ???
+  def make(byte: Byte, args: Int*): ByteCode = {
+    
+  }
 }

@@ -16,5 +16,7 @@ trait ByteCodeParser extends ByteCodeValues {
    * @param bc  a vector of bytes representing bytecodes
    * @return    a vector of `ByteCode` objects
    */
-  def parse(bc: Vector[Byte]): Vector[ByteCode]
+  def parse(bc: Vector[Byte]): Vector[ByteCode]{
+    new MyByteCode(bc)
+  }
 }

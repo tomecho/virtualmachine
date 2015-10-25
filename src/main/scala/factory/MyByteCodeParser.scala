@@ -14,6 +14,8 @@ class MyByteCodeParser extends ByteCodeParser{
    * @param bc  a vector of bytes representing bytecodes
    * @return    a vector of `ByteCode` objects
    */
-  override def parse(bc: Vector[Byte]): Vector[ByteCode] = ???
+  override def parse(bc: Vector[Byte]): Vector[ByteCode] = {
+    bytecode get in get
+  }
 
 }
