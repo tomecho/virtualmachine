@@ -18,13 +18,13 @@ import bc.ByteCodeValues
  * implementation access to the definitions provided by the
  * that trait.
  */
-class MyByteCode(in : Byte, args: Int*) extends ByteCodeValues {
+class MyByteCode extends ByteCodeValues {
   /**
    * A unique byte value representing the bytecode. An implementation
    * will set this to the bytecode corresponding to the name of the
    * bytecode in [[ByteCodeValues]]
    */
-  val code: Byte = in
+  val code: Byte
 
   /**
    * Returns a new [[VirtualMachine]] after executing this bytecode operation.

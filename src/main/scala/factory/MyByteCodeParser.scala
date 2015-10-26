@@ -15,12 +15,11 @@ class MyByteCodeParser extends ByteCodeParser{
    * @return    a vector of `ByteCode` objects
    */
   def parse(bc: Vector[Byte]): Vector[ByteCode] = {
-    var out: Vector[ByteCode]
     var s = new MyByteCodeFactory()
     for(i <- 0 until bc.length){
       s.make(bc(i))
     }
-    return out
+    //return out
   }
 
 }

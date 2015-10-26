@@ -5,7 +5,7 @@ import bc.{InvalidBytecodeException, ByteCodeValues, ByteCode, ByteCodeFactory}
  * Created by tom on 10/23/15.
  */
 
-class MyByteCodeFactory extends ByteCodeFactory{
+class MyByteCodeFactory extends ByteCodeFactory with ByteCodeValues{
   /**
    * Returns a [[ByteCode]].
    *
@@ -22,8 +22,21 @@ class MyByteCodeFactory extends ByteCodeFactory{
    * @return a new bytecode object
    */
   def make(byte: Byte, args: Int*): ByteCode = {
-    var out =  Vector[ByteCode]()
-    var s = new MyByteCodeFactory()
-//
+    val name = bytecode.map(_.swap).get(byte)
+    "iconst", "iadd", "isub", "imul", "idiv", "irem",
+    "ineg", "iinc", "idec", "idup", "iswap", "print"
+    if(name.equals("iconst")) new iconst()
+    else if(name.equals("iadd")) new iadd()
+    else if(name.equals("isub")) new isub()
+    else if(name.equals("imul")) new imul()
+    else if(name.equals("idiv")) new idiv()
+    else if(name.equals("irem")) new irem()
+    else if(name.equals("ineg")) new ineg()
+    else if(name.equals("iinc")) new iinc()
+    else if(name.equals("idec")) new idec()
+    else if(name.equals("idup")) new idup()
+    else if(name.equals("iswap")) new iswap()
+    else if(name.equals("print")) new print()
+
   }
 }
