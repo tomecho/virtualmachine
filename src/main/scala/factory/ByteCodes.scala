@@ -1,6 +1,6 @@
 package factory
 
-import bc.ByteCode
+import bc.{InvalidBytecodeException, ByteCode}
 import vm.VirtualMachine
 
 /**
@@ -10,6 +10,7 @@ import vm.VirtualMachine
     //    NUM: The iconst instruction pushes the integer value NUM on the virtual machine stack. .
     val code: Byte = bytecode(this.getClass.getSimpleName)
     override def execute(vm : VirtualMachine): VirtualMachine = {
+      if(NUM == null) throw new InvalidBytecodeException("no param on iconst")
       vm.push(NUM)
     }
   }

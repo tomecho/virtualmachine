@@ -1,6 +1,8 @@
 package factory
 
-import bc.ByteCode
+import java.util
+import java.util.Stack
+import bc.{InvalidBytecodeException, ByteCode, ByteCodeParser}
 import vm.VirtualMachine
 /**
  * Created by tom on 10/26/15.
@@ -18,6 +20,7 @@ import vm.VirtualMachine
  */
 
 class MyVirtualMachine extends VirtualMachine{
+  var stack = new util.Stack[Int]
   /**
    * Executes a vector of bytecodes.
    *
@@ -28,7 +31,15 @@ class MyVirtualMachine extends VirtualMachine{
    * @param bc a vector of bytecodes
    * @return a new virtual machine
    */
-  def execute(bc: Vector[ByteCode]): VirtualMachine = ???
+  def execute(bc: Vector[ByteCode]): VirtualMachine = {
+    var iter = bc.iterator
+    var ba = bc
+    while(iter.hasNext){
+      ba = executeOne(ba)._1
+      iter.next()
+    }
+    this
+  }
 
   /**
    * Executes the next bytecode in the vector of bytecodes.
@@ -42,7 +53,10 @@ class MyVirtualMachine extends VirtualMachine{
    * @param bc the vector of bytecodes
    * @return a tuple of a new vector of bytecodes and virtual machine
    */
-  def executeOne(bc: Vector[ByteCode]): (Vector[ByteCode], VirtualMachine) = ???
+  def executeOne(bc: Vector[ByteCode]): (Vector[ByteCode], VirtualMachine) = {
+    execute(Vector(bc.head))
+    (bc.tail,this)
+  }
 
   /**
    * Pushes an integer value onto the virtual machine stack.
@@ -50,7 +64,10 @@ class MyVirtualMachine extends VirtualMachine{
    * @param value the integer to push
    * @return a new virtual machine with the integer `value` pushed
    */
-  def push(value: Int): VirtualMachine = ???
+  def push(value: Int): VirtualMachine = {
+    stack.push(value)
+    this
+  }
 
   /**
    * Pops an integer value off of the virtual machine stack.
@@ -58,7 +75,9 @@ class MyVirtualMachine extends VirtualMachine{
    * @return (i, vm), where i is the integer popped and vm is the
    *         new virtual machine
    */
-  def pop(): (Int, VirtualMachine) = ???
+  def pop(): (Int, VirtualMachine) = {
+    (stack.pop(), this)
+  }
 
   /**
    * Returns the state of the virtual machine stack.
@@ -67,5 +86,11 @@ class MyVirtualMachine extends VirtualMachine{
    *
    * @return the state of the stack
    */
-  def state: Vector[Int] = ???
+  def state: Vector[Int] = {
+    var out: Vector[Int] = null
+    while(!stack.isEmpty){
+      out = out :+ stack.pop()
+    }
+    return out
+  }
 }
