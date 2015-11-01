@@ -31,7 +31,7 @@ class MyVirtualMachineParser extends VirtualMachineParser{
   /**
    * A map from bytecode names to a unique byte that represents them.
    */
-  val bytecode = names.zip(1.to(names.length).map(_.toByte)).toMap
+  val bytecode = names.zip(1.to(names.length).map(_.toByte)).toMap //yes yes im a sinner
   /**
    * Returns a vector of [[bc.ByteCode]].
    *
@@ -46,16 +46,22 @@ class MyVirtualMachineParser extends VirtualMachineParser{
     val out = new VectorBuilder[ByteCode]()
     val pp = new MyProgramParser
     val bcp = new MyByteCodeFactory
-    val insructions = pp.parse(file)
-    for(i <- insructions){
-      if(i.args.length == 1) {
-        out += bcp.make(bytecode(i.name), i.args(0))
-      } else if(i.args.length == 0) out += bcp.make(bytecode(i.name))
-      else throw new InvalidBytecodeException("too many bruh")
-
+    try { //combine all the parsers in here
+      val insructions = pp.parse(file)
+      for (i <- insructions) {
+        if (!names.contains(i.name)) throw new InvalidBytecodeException("instruction doesnt exist")
+        if (i.args.length == 1) { //check for iconst
+          out += bcp.make(bytecode(i.name), i.args(0))
+        } else if (i.args.length == 0) out += bcp.make(bytecode(i.name))
+        else throw new InvalidBytecodeException("too many bruh")
+      }
+    } catch {
+      case e : vendor.InvalidInstructionFormatException => {
+        throw new InvalidBytecodeException("plz work")
+      }
     }
     return out.result()
-    }
+  }
 
 
 
@@ -69,17 +75,23 @@ class MyVirtualMachineParser extends VirtualMachineParser{
    * @param str a string containing a program
    * @return a vector of bytecodes
    */
-  def parseString(str: String): Vector[ByteCode] = {
+  def parseString(str: String): Vector[ByteCode] = { //almost same as above, could have done this a little better but oh well
     val out = new VectorBuilder[ByteCode]()
     val pp = new MyProgramParser
     val bcp = new MyByteCodeFactory
-    val insructions = pp.parseString(str)
-    for(i <- insructions){
-      if(i.args.length == 1) {
-        out += bcp.make(bytecode(i.name), i.args(0))
-      } else if(i.args.length == 0) out += bcp.make(bytecode(i.name))
-      else throw new InvalidBytecodeException("too many bruh")
-
+    try {
+      val insructions = pp.parseString(str)
+      for (i <- insructions) {
+        if (!names.contains(i.name)) throw new InvalidBytecodeException("instruction doesnt exist")
+        if (i.args.length == 1) {
+          out += bcp.make(bytecode(i.name), i.args(0))
+        } else if (i.args.length == 0) out += bcp.make(bytecode(i.name))
+        else throw new InvalidBytecodeException("too many bruh")
+      }
+    } catch {
+      case e : vendor.InvalidInstructionFormatException => {
+        throw new InvalidBytecodeException("plz work") //i was getting a little frustrated here the msg is a bit specific to when i was working on it
+      }
     }
     return out.result()
   }

@@ -21,13 +21,13 @@ class MyByteCodeFactory extends ByteCodeFactory with ByteCodeValues{
    * @param args  an optional integer argument (depends on bytecode)
    * @return a new bytecode object
    */
-  def make(byte: Byte, args: Int*): ByteCode = {
+  def make(byte: Byte, args: Int*): ByteCode = { //just map the corresponding bytecode to its specific class
     if(args.length > 1) throw new InvalidBytecodeException("too long")
-    val flip = bytecode.map(_.swap)
-    if(!flip.contains(byte)) throw new InvalidBytecodeException("")
+    val flip = bytecode.map(_.swap) //my reverse map
+    if(!flip.contains(byte)) throw new InvalidBytecodeException("") //doesnt even exist
     val name = flip.get(byte).get
     if(name == "iconst") {
-      if(args.length < 1) throw new InvalidBytecodeException("no parametar on iconst")
+      if(args.length < 1) throw new InvalidBytecodeException("no parametar on iconst") //neeed a param here
       return new iconst(args(0))
     }
     else if(name.equals("iadd")) return new iadd
@@ -41,6 +41,6 @@ class MyByteCodeFactory extends ByteCodeFactory with ByteCodeValues{
     else if(name.equals("idup")) return new idup
     else if(name.equals("iswap")) return new iswap
     else if(name.equals("print")) return new print
-    throw new InvalidBytecodeException("couldnt find it")
+    throw new InvalidBytecodeException("couldnt find it") //command doesnt exist
   }
 }

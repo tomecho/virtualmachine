@@ -14,7 +14,7 @@ import vm.{VirtualMachineParser, VirtualMachine}
  * methods for each of the important parts in this assignment. You must
  * implement each method such that it returns an object of the correct type.
  */
-object VirtualMachineFactory {
+object VirtualMachineFactory { //like the insructers comment, there isnt much going on her
   // TODO
   def byteCodeFactory: ByteCodeFactory = new MyByteCodeFactory()
   // TODO

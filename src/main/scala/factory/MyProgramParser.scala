@@ -36,13 +36,13 @@ class MyProgramParser extends vendor.ProgramParser{
    */
   def parseString(string: String): InstructionList = {
     var out = Vector[Instruction]()
-    for(line <- string.split("\\n")){
-      val split = line.split(" ")
+    for(line <- string.split("\\n")){ //split it a few time
+      val split = line.split(" ") //split again for each part
       val names = Vector("iconst", "iadd", "isub", "imul", "idiv", "irem",
         "ineg", "iinc", "idec", "idup", "iswap", "print")
       if(!names.contains(split(0))) throw new InvalidInstructionFormatException(line)
       val args = split.tail.map(_.toInt).toVector
-      out = out :+ (new Instruction(split(0), args))
+      out = out :+ (new Instruction(split(0), args)) //add to list
     }
     return out
   }

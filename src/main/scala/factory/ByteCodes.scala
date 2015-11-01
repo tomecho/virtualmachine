@@ -6,11 +6,11 @@ import vm.VirtualMachine
 /**
  * Created by tom on 10/25/15.
  */
-  class iconst(NUM: Int) extends ByteCode{
+  class iconst(NUM: Int) extends ByteCode{ //looks like you did these comments for me
     //    NUM: The iconst instruction pushes the integer value NUM on the virtual machine stack. .
     val code: Byte = bytecode(this.getClass.getSimpleName)
     override def execute(vm : VirtualMachine): VirtualMachine = {
-      if(NUM == null) throw new InvalidBytecodeException("no param on iconst")
+      //if(NUM == null) throw new InvalidBytecodeException("no param on iconst")
       vm.push(NUM)
     }
   }

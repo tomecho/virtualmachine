@@ -2,14 +2,14 @@ package factory
 
 import java.lang.Exception
 import java.lang.Exception
-import bc.{InvalidBytecodeException, ByteCode, ByteCodeParser}
+import bc.{ByteCodeValues, InvalidBytecodeException, ByteCode, ByteCodeParser}
 
 import scala.util.control.Exception
 
 /**
  * Created by tom on 10/22/15.
  */
-class MyByteCodeParser extends ByteCodeParser{
+class MyByteCodeParser extends ByteCodeParser with ByteCodeValues{
   /**
    * Parses a vector of `Byte` into a vector of `ByteCode`.
    *
@@ -21,20 +21,14 @@ class MyByteCodeParser extends ByteCodeParser{
    */
   def parse(bc: Vector[Byte]): Vector[ByteCode] = {
     val f = new MyByteCodeFactory
+    val flip = bytecode.map(_.swap)
     var out = Vector[ByteCode]()
-    var iter = bc.iterator
-    while(iter.hasNext){
+    val iter = bc.iterator
+    while(iter.hasNext){ //iterate thru bc
       val s = iter.next()
-      var n: ByteCode = null
-      try {
-        n = f.make(s)
-      } catch {
-        case d: InvalidBytecodeException => {
-          if(d.getMessage.equals("no parametar on iconst")) {
-            println(n + "is an iconst")
-            n = f.make(s, iter.next)
-          }
-        }
+      val n: ByteCode = { //special case if iconst, if not just do it normally
+        if(flip(s).equals("iconst")) f.make(s, iter.next().toInt)
+        else f.make(s)
       }
       out = out :+ n
     }

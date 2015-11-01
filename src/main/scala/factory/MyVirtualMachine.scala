@@ -3,7 +3,7 @@ package factory
 import java.util
 import java.util.Stack
 import bc.{InvalidBytecodeException, ByteCode, ByteCodeParser}
-import vm.VirtualMachine
+import vm.{MachineUnderflowException, VirtualMachine}
 /**
  * Created by tom on 10/26/15.
  */
@@ -20,7 +20,7 @@ import vm.VirtualMachine
  */
 
 class MyVirtualMachine extends VirtualMachine{
-  var stack = new util.Stack[Int]
+  var stack = new Stack[Int]()
   /**
    * Executes a vector of bytecodes.
    *
@@ -32,13 +32,11 @@ class MyVirtualMachine extends VirtualMachine{
    * @return a new virtual machine
    */
   def execute(bc: Vector[ByteCode]): VirtualMachine = {
-    var iter = bc.iterator
-    var ba = bc
-    while(iter.hasNext){
-      ba = executeOne(ba)._1
-      iter.next()
+    for(n <- bc.iterator){
+      println(state)
+      executeOne(Vector[ByteCode](n))
     }
-    this
+    this //just call execute one for each
   }
 
   /**
@@ -54,8 +52,9 @@ class MyVirtualMachine extends VirtualMachine{
    * @return a tuple of a new vector of bytecodes and virtual machine
    */
   def executeOne(bc: Vector[ByteCode]): (Vector[ByteCode], VirtualMachine) = {
-    execute(Vector(bc.head))
-    (bc.tail,this)
+    if(bc.size >= 1) bc.head.execute(this)
+    else throw new MachineUnderflowException("not enough stuff to execute")
+    return (bc.tail, this) //execute the first, i checked bc.size anyways
   }
 
   /**
@@ -66,7 +65,7 @@ class MyVirtualMachine extends VirtualMachine{
    */
   def push(value: Int): VirtualMachine = {
     stack.push(value)
-    this
+    this //such simplicity
   }
 
   /**
@@ -76,7 +75,8 @@ class MyVirtualMachine extends VirtualMachine{
    *         new virtual machine
    */
   def pop(): (Int, VirtualMachine) = {
-    (stack.pop(), this)
+    if(stack.size < 1)throw new MachineUnderflowException("not enough objects in the stack to execute")
+    return (stack.pop(), this) //another simple one
   }
 
   /**
@@ -87,10 +87,10 @@ class MyVirtualMachine extends VirtualMachine{
    * @return the state of the stack
    */
   def state: Vector[Int] = {
-    var out: Vector[Int] = null
-    while(!stack.isEmpty){
-      out = out :+ stack.pop()
+    var out = Vector[Int]() //iteratre thru the stack
+    for(i <- 0 until stack.size){
+      out = out :+ stack.get(i)
     }
-    return out
+    return out.reverse //looks like i need to do this the other way, quick fix
   }
 }

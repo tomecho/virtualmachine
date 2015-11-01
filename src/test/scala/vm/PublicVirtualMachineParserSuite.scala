@@ -7,6 +7,16 @@ import org.scalatest.FunSuite
 class PublicVirtualMachineParserSuite extends FunSuite with ByteCodeValues {
   val vmp = VirtualMachineFactory.virtualMachineParser
 
+  test("vm parser should do inline multiline") {
+    intercept[InvalidBytecodeException] {
+      val code = vmp.parseString("icons 4\niconst 3\niadd\nprint")
+      assert(code(0).code == bytecode("iconst"))
+      assert(code(1).code == bytecode("iconst"))
+      assert(code(2).code == bytecode("iadd"))
+      assert(code(3).code == bytecode("iprint"))
+    }
+  }
+
   test("[8] vm parser should parse programs/p01.vm a file into bytecode") {
     val code = vmp.parse("programs/p01.vm")
     assert(code.length == 4)
